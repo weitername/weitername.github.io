@@ -6,7 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        div {
+        * {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            /* width: 1500px;
+            height: 1000px;
+            background: url('./images/0060lm7Tly1g5b7rkx62rj30u0140tge.jpg') no-repeat;
+            background-size: cover; */
+
+        }
+
+
+        /* .homepage {
 
             width: 100%;
             height: 100px;
@@ -14,20 +34,178 @@
             font-size: 50px;
             padding-left: 50%;
             background: linear-gradient(to right, red, orange, yellow, green, cyan, blue, violet);
+        } */
+
+        .all {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            margin: 150px auto;
+            border: 1px solid black;
         }
 
-        body {
-            background: url('./images/0060lm7Tly1g5b7rkx62rj30u0140tge.jpg') no-repeat;
-            background-size: cover;
+        .slideshow {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
+
+        }
+
+        .slideshow ul {
+            width: 3500px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .slideshow ul li {
+            width: 500px;
+            height: 500px;
+            float: left;
+            list-style: none;
+            overflow: hidden;
+        }
+
+        .slideshow ol {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .slideshow ol li {
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+            float: left;
+            border: 1px solid black;
+            background-color: white;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .slideshow ol li.active {
+            background-color: yellow;
+        }
+
+        .arr {
+            display: none;
+
+        }
+
+        .arr span {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: rgba(0, 0, 0, .3);
+            font-size: 30px;
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            margin-top: -20px;
+            cursor: pointer;
+            text-align: center;
+            color: white;
+            /* border: 1px solid black; */
+        }
+
+        .arr .right {
+            right: 5px;
+            left: auto;
         }
     </style>
 </head>
 
 <body>
-    <div>zw个人主页</div>
+    <!-- <div class="homepage">zw个人主页</div> -->
+    <div class="all">
+        <div class="slideshow">
+            <ul>
+                <li><img src="./images/1.jpg" alt=""></li>
+                <li><img src="./images/2.jpg" alt=""></li>
+                <li><img src="./images/3.jpg" alt=""></li>
+                <li><img src="./images/4.jpg" alt=""></li>
+                <li><img src="./images/5.jpg" alt=""></li>
+                <li><img src="./images/6.jfif" alt=""></li>
+            </ul>
+
+            <ol></ol>
+        </div>
+        <div class="arr">
+            <span class="left">&lt;</span>
+            <span class="right">&gt;</span>
+        </div>
+    </div>
+
 
     <br>
-    <a href="./1.html">下一个</a>
+    <!-- <a href="./1.html">下一个</a> -->
+    <script src="./js/jquery-1.12.4.js"></script>
+    <script>
+        let index = 0;
+        let indexNew = 0;
+        for (let i = 0; i < $('ul li').length; i++) {
+            let liNew = $(`<li>${i+1}</li>`);
+            liNew.attr('index', i)
+            $('.slideshow ol').append(liNew);
+        }
+        $('ol li:eq(0)').attr('class', 'active');
+
+        $('ol li').on('click', function () {
+            $(this).addClass('active').siblings().removeClass('active');
+            let idx = $(this).index();
+            index = indexNew = idx;
+            $('ul').animate({
+                left: -idx * 500
+            }, 2000, 'linear');
+
+
+        });
+        $('.all').on('mouseenter', function () {
+            $('.arr').show();
+        });
+        $('.all').on('mouseleave', function () {
+            $('.arr').hide();
+        });
+        $('ul').append($('ul li:eq(0)').clone())
+        $('.right').on('click', function () {
+
+            if (index == 6) {
+                index = 0;
+                $('ul').css('left', 0)
+            }
+            index++;
+            $('ul').animate({
+                left: -index * 500
+            }, 2000, 'linear');
+            indexNew++;
+            if (indexNew == 6) {
+                indexNew = 0;
+            }
+            console.log(indexNew);
+            $('ol li').eq(indexNew).addClass('active').siblings().removeClass('active')
+        });
+        $('.left').on('click', function () {
+            index--;
+            if (index < 0) {
+                index = 6;
+                $('ul').css('left', -index * 500)
+            }
+
+            $('ul').animate({
+                left: -index * 500
+            }, 2000, 'linear');
+            indexNew--;
+            if (indexNew < 0) {
+                indexNew = 6;
+            }
+            $('ol li').eq(indexNew).addClass('active').siblings().removeClass('active')
+        });
+    </script>
+
+
 </body>
 
 </html>
